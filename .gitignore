@@ -1,0 +1,39 @@
+# Build output
+Debug/
+Release/
+Build/
+*.o
+*.d
+*.elf
+*.bin
+*.hex
+*.map
+*.list
+*.su
+*.cyclo
+
+# STM32CubeIDE
+.settings/
+.metadata/
+.cproject
+.project
+.mxproject
+
+# Launch configs
+*.launch
+
+# OS files
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Backup files
+*.bak
+*.orig

@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(where putty:*)",
+      "Bash(where plink:*)",
+      "Bash(where python:*)",
+      "Bash(where py:*)",
+      "Bash(powershell -Command \"[System.IO.Ports.SerialPort]::GetPortNames\\(\\)\")",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:community.st.com)"
+    ]
+  }
+}
