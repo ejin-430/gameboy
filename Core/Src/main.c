@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "fatfs.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -27,6 +28,7 @@
 #include "../../Drivers/audio/audio.h"
 #include "../../System/menu.h"
 #include "../../Games/snake.h"
+#include "../../Drivers/sd/sd.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -102,9 +104,12 @@ int main(void)
   MX_USART2_UART_Init();
   MX_SPI1_Init();
   MX_TIM4_Init();
+  MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
   lcd_init();
   menu_init();
+  sd_init();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -112,15 +117,6 @@ int main(void)
   while (1)
   {
 	  buttons_update();
-	      // uint8_t pressed = buttons_pressed();
-	      // // which UART to use, the data to send, number of bytes, timeout
-	      // if (pressed & BTN_UP) HAL_UART_Transmit(&huart2, (uint8_t*)"UP\r\n", 4, HAL_MAX_DELAY);
-	      // if (pressed & BTN_DOWN) HAL_UART_Transmit(&huart2, (uint8_t*)"DOWN\r\n", 6, HAL_MAX_DELAY);
-	      // if (pressed & BTN_LEFT) HAL_UART_Transmit(&huart2, (uint8_t*)"LEFT\r\n", 6, HAL_MAX_DELAY);
-	      // if (pressed & BTN_RIGHT) HAL_UART_Transmit(&huart2, (uint8_t*)"RIGHT\r\n", 7, HAL_MAX_DELAY);
-	      // if (pressed & BTN_A) HAL_UART_Transmit(&huart2, (uint8_t*)"A\r\n", 3, HAL_MAX_DELAY);
-	      // if (pressed & BTN_B) HAL_UART_Transmit(&huart2, (uint8_t*)"B\r\n", 3, HAL_MAX_DELAY);
-//	      // ------------------- MENU TEST ------------------- //
 	      int selection = menu_update();
 	      if (selection == SNAKE) {
 	        snake_run();
