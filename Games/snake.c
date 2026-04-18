@@ -11,9 +11,9 @@ static uint16_t score;
 static uint8_t game_over;
 
 // Colour codes 
-const uint16_t bg = 0xFFFF;
-const uint16_t snake_colour = 0x07E0;
-const uint16_t food_colour = 0xF800;
+static const uint16_t bg = 0x0000;
+static const uint16_t snake_colour = 0x07E0;
+static const uint16_t food_colour = 0xF800;
 
 
 void snake_init() {
@@ -48,10 +48,10 @@ void snake_input() {
     uint8_t pressed = buttons_pressed(); 
 
     // Block reverse directions 
-    if (pressed == BTN_UP && direction != DIR_DOWN) direction = DIR_UP;
-    else if (pressed == BTN_DOWN && direction != DIR_UP) direction = DIR_DOWN;
-    else if (pressed == BTN_LEFT && direction != DIR_RIGHT) direction = DIR_LEFT;
-    else if (pressed == BTN_RIGHT && direction != DIR_LEFT) direction = DIR_RIGHT;
+    if ((pressed & BTN_UP) && (direction != DIR_DOWN)) direction = DIR_UP;
+    else if ((pressed & BTN_DOWN) && (direction != DIR_UP)) direction = DIR_DOWN;
+    else if ((pressed & BTN_LEFT) && (direction != DIR_RIGHT)) direction = DIR_LEFT;
+    else if ((pressed & BTN_RIGHT) && (direction != DIR_LEFT)) direction = DIR_RIGHT;
 }
 
 // Random position generator for food 
@@ -111,6 +111,7 @@ void snake_update() {
     // Eating food? 
     if (new_pos.x == food.x && new_pos.y == food.y) {
         score++; 
+        audio_play_tone(1300, 30);
         spawn_food(); 
     } else {
         lcd_fill_rect(body[tail].x * TILE_SIZE, body[tail].y * TILE_SIZE, TILE_SIZE, TILE_SIZE, bg);
@@ -140,10 +141,10 @@ void snake_run() {
     }
 
     gfx_clear_screen(bg);
-    gfx_draw_string(10, 10, "GAME OVER ...", 0x0000, bg);
+    gfx_draw_string(10, 10, "GAME OVER ...", 0xFFFF, bg);
     char score_str[20];
     sprintf(score_str, "Score: %d", score);
-    gfx_draw_string(10, 40, score_str, 0x0000, bg);
+    gfx_draw_string(10, 40, score_str, 0xFFFF, bg);
 
     // Wait for any buttons to be released, then wait for B press to exit
     HAL_Delay(500);

@@ -105,7 +105,7 @@ This is the hardest peripheral to bring up — SD cards are picky about timing a
 
 ## Phase 8 — Tetris
 **Files:** `games/tetris.c`, `games/tetris.h`
-**Status:** [ ] Not started
+**Status:** Done
 
 More complex state than Snake: 7 tetromino shapes each with 4 rotation states, a 10x20 grid, line clear detection, and scoring. The SPI-only rendering constraint matters more here — only redraw changed cells.
 

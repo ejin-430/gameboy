@@ -30,6 +30,7 @@
 #include "../../Games/snake.h"
 #include "../../Drivers/sd/sd.h"
 #include "../../Games/tetris.h"
+#include "../../Games/shooter.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -125,6 +126,7 @@ int main(void)
 	    tetris_run();
       menu_init();
     } else if (selection == TOP_DOWN_SHOOTER) {
+      shooter_run();
 	    menu_init();
 	  }
     HAL_Delay(100);

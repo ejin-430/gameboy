@@ -158,6 +158,7 @@ static void clear_lines () {
     }
 
     if (rows_cleared > 0) {
+        audio_play_tone(1300, 30);
         // calculate variables
         lines += rows_cleared; 
         level = lines / 10; 
@@ -225,35 +226,35 @@ void tetris_init () {
 void tetris_input() {
     uint8_t pressed = buttons_pressed(); 
 
-    if (pressed == BTN_DOWN) {
+    if (pressed & BTN_DOWN) {
         Piece tmp = current; 
-        tmp.y = tmp.y+1; 
+        tmp.y = tmp.y+2; 
 
         draw_piece(current, tetris_bg);
         if (!collision(tmp)) current = tmp; 
         draw_piece(current, piece_colours[current.type]);
-    } else if (pressed == BTN_LEFT) {
+    } else if (pressed & BTN_LEFT) {
         Piece tmp = current; 
         tmp.x = tmp.x-1; 
 
         draw_piece(current, tetris_bg);
         if (!collision(tmp)) current = tmp; 
         draw_piece(current, piece_colours[current.type]);
-    } else if (pressed == BTN_RIGHT) {
+    } else if (pressed & BTN_RIGHT) {
         Piece tmp = current; 
         tmp.x = tmp.x+1; 
 
         draw_piece(current, tetris_bg);
         if (!collision(tmp)) current = tmp; 
         draw_piece(current, piece_colours[current.type]);
-    } else if (pressed == BTN_A) {
+    } else if (pressed & BTN_A) {
         Piece tmp = current; 
         tmp.rot = (tmp.rot+1)%4; 
 
         draw_piece(current, tetris_bg);
         if (!collision(tmp)) current = tmp; 
         draw_piece(current, piece_colours[current.type]);
-    } else if (pressed == BTN_B && hold_used == 0) {
+    } else if ((pressed & BTN_B) && (hold_used == 0)) {
         if (hold_type == -1) {
             hold_type = current.type;
             draw_piece(current, tetris_bg);
@@ -318,11 +319,11 @@ void tetris_run () {
         }
     }
 
-    gfx_clear_screen(0xFFFF);
-    gfx_draw_string(10, 10, "GAME OVER ...", 0x0000, 0xFFFF);
+    gfx_clear_screen(tetris_bg);
+    gfx_draw_string(10, 10, "GAME OVER ...", 0xFFFF, tetris_bg);
     char score_str[20];
     sprintf(score_str, "Score: %d", score);
-    gfx_draw_string(10, 40, score_str, 0x0000, 0xFFFF);
+    gfx_draw_string(10, 40, score_str, 0xFFFF, tetris_bg);
 
     // Wait for any buttons to be released, then wait for B press to exit
     HAL_Delay(500);

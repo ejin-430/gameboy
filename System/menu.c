@@ -24,7 +24,7 @@ int menu_update(void) {
 
     // A to select 
     if (pressed & BTN_A) {
-        audio_play_tone(1000, 80);
+        audio_play_tone(2000, 80);
         return cur_item;
     }
 
@@ -33,12 +33,12 @@ int menu_update(void) {
         if (cur_item == 0) cur_item = tot_items-1;
         else cur_item--;
         menu_draw();
-        audio_play_tone(600, 30);
+        audio_play_tone(1300, 30);
     } else if (pressed & BTN_DOWN) {
         if (cur_item == tot_items-1) cur_item = 0;
         else cur_item++;
         menu_draw();
-        audio_play_tone(600, 30);
+        audio_play_tone(1300, 30);
     } 
     
     return -1;
