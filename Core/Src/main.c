@@ -29,6 +29,7 @@
 #include "../../System/menu.h"
 #include "../../Games/snake.h"
 #include "../../Drivers/sd/sd.h"
+#include "../../Games/tetris.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -109,7 +110,6 @@ int main(void)
   lcd_init();
   menu_init();
   sd_init();
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -117,15 +117,17 @@ int main(void)
   while (1)
   {
 	  buttons_update();
-	      int selection = menu_update();
-	      if (selection == SNAKE) {
-	        snake_run();
-	        menu_init();
-	      } else if (selection == TETRIS) {
-	        menu_init();
-	      } else if (selection == TOP_DOWN_SHOOTER) {
-	        menu_init();
-	      }
+	  int selection = menu_update();
+	  if (selection == SNAKE) {
+	    snake_run();
+	    menu_init();
+	  } else if (selection == TETRIS) {
+	    tetris_run();
+      menu_init();
+    } else if (selection == TOP_DOWN_SHOOTER) {
+	    menu_init();
+	  }
+    HAL_Delay(100);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

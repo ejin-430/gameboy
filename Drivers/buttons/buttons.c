@@ -34,7 +34,9 @@ void buttons_update() {
 
 // Find buttons that are ON now but OFF before
 uint8_t buttons_pressed() {
-    return btn_cur & (~btn_prev);
+    uint8_t press = btn_cur & (~btn_prev);
+    btn_prev = btn_cur; 
+    return press;
 }
 
 // Find buttons that are ON now and ON before
