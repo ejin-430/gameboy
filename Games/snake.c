@@ -111,7 +111,7 @@ void snake_update() {
 
     // Eating food? 
     if (new_pos.x == food.x && new_pos.y == food.y) {
-        score++; 
+        score += 100;
         audio_play_tone(1300, 30);
         spawn_food(); 
     } else {

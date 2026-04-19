@@ -1,4 +1,5 @@
 #include "sd.h"
+#include "../spi_dma/spi_dma.h"
 #include <stdio.h>
 
 extern SPI_HandleTypeDef hspi1;
@@ -193,9 +194,10 @@ spi_tx_rx_byte(0xFF);
 return 6; // no/bad data token
 }
 
-// Read 512 data bytes in one HAL call (faster than byte-by-byte).
+// Read 512 data bytes via DMA (faster than polling).
 // HAL_SPI_Receive transmits 0x00 dummies, which the card ignores here.
-HAL_SPI_Receive(&hspi1, buffer, 512, HAL_MAX_DELAY);
+spi_dma_receive(buffer, 512);
+spi_dma_wait();
 
 // Discard 2 CRC bytes (CRC is off in SPI mode — card still sends them).
 spi_tx_rx_byte(0xFF);
@@ -235,7 +237,8 @@ spi_tx_rx_byte(0xFF);
 
 // Data packet: start token 0xFE, 512 bytes, 2 CRC bytes (ignored).
 spi_tx_rx_byte(0xFE);
-HAL_SPI_Transmit(&hspi1, (uint8_t *)buffer, 512, HAL_MAX_DELAY);
+spi_dma_transmit((uint8_t *)buffer, 512);
+spi_dma_wait();
 spi_tx_rx_byte(0xFF); // CRC byte 1 (don't care)
 spi_tx_rx_byte(0xFF); // CRC byte 2 (don't care)
 

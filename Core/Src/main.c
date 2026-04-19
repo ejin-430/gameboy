@@ -32,6 +32,7 @@
 #include "../../Games/tetris.h"
 #include "../../Games/shooter.h"
 #include "../../System/scores.h"
+#include "../../Drivers/spi_dma/spi_dma.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -57,7 +58,8 @@ TIM_HandleTypeDef htim4;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-
+DMA_HandleTypeDef hdma_spi1_tx;
+DMA_HandleTypeDef hdma_spi1_rx;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -67,7 +69,7 @@ static void MX_USART2_UART_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_TIM4_Init(void);
 /* USER CODE BEGIN PFP */
-
+static void MX_DMA_Init(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -104,11 +106,13 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART2_UART_Init();
   MX_SPI1_Init();
   MX_TIM4_Init();
   MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
+  spi_dma_init();
   lcd_init();
   menu_init();
   sd_init();
@@ -377,7 +381,16 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+static void MX_DMA_Init(void)
+{
+  __HAL_RCC_DMA2_CLK_ENABLE();
 
+  HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 1, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
+
+  HAL_NVIC_SetPriority(DMA2_Stream3_IRQn, 1, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream3_IRQn);
+}
 /* USER CODE END 4 */
 
 /**

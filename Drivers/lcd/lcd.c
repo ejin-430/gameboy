@@ -1,6 +1,10 @@
 #include "lcd.h"
+#include "../spi_dma/spi_dma.h"
 
 extern SPI_HandleTypeDef hspi1;
+
+static uint8_t lcd_line_buf[480];   // Holds 1 row of pixel data, 
+                                    // 250 pixels wide * 2 bytes per pixel 
 
 // Toggle control pins
 void sel_lcd(){
@@ -232,15 +236,31 @@ void lcd_set_window(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1) {
     lcd_write_cmd(0x2C);
 }
 
-void lcd_fill_rect(uint16_t x0, uint16_t y0, uint16_t width, uint16_t
-height, uint16_t colour) {
+void lcd_fill_rect(uint16_t x0, uint16_t y0, uint16_t width, uint16_t height, uint16_t colour) {
     lcd_set_window(x0, y0, x0 + width - 1, y0 + height - 1);
 
-    for (uint16_t i = 0; i < height; i++) {
-        for (uint16_t j = 0; j < width; j++) {
+    uint32_t total_pixels = (uint32_t)width * height;
+
+    // If the data size is too small, just fill it using polling 
+    if (total_pixels <= 16) { 
+        for (uint32_t i = 0; i < total_pixels; i++) {
             lcd_write_data(colour >> 8);
             lcd_write_data(colour & 0xFF);
         }
+        desel_lcd();
+        return;
+    }
+
+    // Fills the buffer 
+    uint16_t line_bytes = width * 2;
+    for (uint16_t j = 0; j < width; j++) {
+        lcd_line_buf[j*2] = colour >> 8;
+        lcd_line_buf[j*2 + 1] = colour & 0xFF;
+    }
+    // Access the data directly from memory 
+    for (uint16_t i = 0; i < height; i++) {
+        spi_dma_transmit(lcd_line_buf, line_bytes);
+        spi_dma_wait();
     }
     desel_lcd();
 }
