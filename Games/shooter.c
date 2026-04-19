@@ -1,4 +1,5 @@
 #include "shooter.h"
+#include "../System/scores.h"
 
 static Player player;
 static const uint8_t shooter_sprite[] = {0xE0, 0x78, 0x3E, 0xFF, 0xFF, 0x3E, 0x78, 0xE0};
@@ -189,6 +190,14 @@ void shooter_run() {
     char score_str[20];
     sprintf(score_str, "Score: %d", score);
     gfx_draw_string(10, 40, score_str, 0xFFFF, shooter_bg);
+    if (score > scores_get(TOP_DOWN_SHOOTER)) {
+        scores_set(TOP_DOWN_SHOOTER, score); 
+        scores_save(); 
+        gfx_draw_string(10, 70, "NEW HIGH SCORE!", 0xF800, shooter_bg);
+    } else {
+        sprintf(score_str, "Best score: %d", scores_get(TOP_DOWN_SHOOTER));
+        gfx_draw_string(10, 70, score_str, 0xFFFF, shooter_bg);
+    }
 
     // Wait for any buttons to be released, then wait for B press to exit
     HAL_Delay(500);

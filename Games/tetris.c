@@ -1,4 +1,5 @@
 #include "tetris.h"
+#include "../System/scores.h"
 
 static const int8_t tetrominoes[7][4][4][2] = {
     // 0: I
@@ -324,6 +325,14 @@ void tetris_run () {
     char score_str[20];
     sprintf(score_str, "Score: %d", score);
     gfx_draw_string(10, 40, score_str, 0xFFFF, tetris_bg);
+    if (score > scores_get(TETRIS)) {
+        scores_set(TETRIS, score); 
+        scores_save(); 
+        gfx_draw_string(10, 70, "NEW HIGH SCORE!", 0xF800, tetris_bg);
+    } else {
+        sprintf(score_str, "Best score: %d", scores_get(TETRIS));
+        gfx_draw_string(10, 70, score_str, 0xFFFF, tetris_bg);
+    }
 
     // Wait for any buttons to be released, then wait for B press to exit
     HAL_Delay(500);

@@ -1,4 +1,5 @@
 #include "snake.h"
+#include "../System/scores.h"
 
 static Position body[MAX_SNAKE_LEN];
 static uint16_t head; 
@@ -145,6 +146,14 @@ void snake_run() {
     char score_str[20];
     sprintf(score_str, "Score: %d", score);
     gfx_draw_string(10, 40, score_str, 0xFFFF, bg);
+    if (score > scores_get(SNAKE)) {
+        scores_set(SNAKE, score); 
+        scores_save(); 
+        gfx_draw_string(10, 70, "NEW HIGH SCORE!", 0xF800, bg);
+    } else {
+        sprintf(score_str, "Best score: %d", scores_get(SNAKE));
+        gfx_draw_string(10, 70, score_str, 0xFFFF, bg);
+    }
 
     // Wait for any buttons to be released, then wait for B press to exit
     HAL_Delay(500);

@@ -31,6 +31,7 @@
 #include "../../Drivers/sd/sd.h"
 #include "../../Games/tetris.h"
 #include "../../Games/shooter.h"
+#include "../../System/scores.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -111,6 +112,7 @@ int main(void)
   lcd_init();
   menu_init();
   sd_init();
+  scores_load(); 
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -129,7 +131,7 @@ int main(void)
       shooter_run();
 	    menu_init();
 	  }
-    HAL_Delay(100);
+    HAL_Delay(20);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

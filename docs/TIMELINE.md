@@ -115,7 +115,7 @@ More complex state than Snake: 7 tetromino shapes each with 4 rotation states, a
 
 ## Phase 9 — Top-down Shooter
 **Files:** `games/shooter.c`, `games/shooter.h`
-**Status:** [ ] Not started
+**Status:** Done
 
 Player position, bullet list, enemy list, collision between bullets and enemies. Requires a simple entity system and frame-rate-independent movement.
 

@@ -9,7 +9,9 @@
       "WebSearch",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:raw.githubusercontent.com)",
-      "WebFetch(domain:community.st.com)"
+      "WebFetch(domain:community.st.com)",
+      "Bash(ls -la /d/Projects/gamboy/gameboy/System/scores.*)",
+      "Bash(wc -l /d/Projects/gamboy/gameboy/System/scores.*)"
     ]
   }
 }
